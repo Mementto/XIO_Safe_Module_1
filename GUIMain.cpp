@@ -22,27 +22,25 @@ GUIMain::GUIMain(
 	const int& lessNum = 0)
 	: mWindowNum(windowNum),
 	mFileName(fileName), 
-	mSection(section){
+	mSection(section),
+	mCameraNum(cameraNum) {
 
 	mCParseIniFile = new CParseIniFile();
 	mCriticalArea = new CriticalArea(bufferSize_1, bufferSize_2, 0, 0, lessNum);
 	mProducer = new Producer[cameraNum];
-    mConsumer = new Consumer[windowNum];
+	mConsumer = new Consumer[windowNum];
 }
 
 void GUIMain::create() {
 
-	/* int为相机编号（0到n），string为相机路径 */
-	map<int, string> path;
-
 	/* 将ini文件中的指定键-值对输出到map中 */
-	mCParseIniFile->ReadConfig(mFileName, path, mSection);
+	mCParseIniFile->ReadConfig(mFileName, mPath, mSection);
 	map<int, string>::iterator iter;
 	int i;
 
 	/* 根据path中的键-值对数量来确定创建的生产者线程数（上面的
 	windowNum并没有用到，只是用来确定数组的范围） */
-	for (iter = path.begin(), i = 0; iter != path.end(); iter++, i++) {
+	for (iter = mPath.begin(), i = 0; iter != mPath.end(); iter++, i++) {
 		mProducer[i].setData(mCriticalArea);
 		mProducer[i].setPath(iter->second);
 		mProducer[i].setId(iter->first);
@@ -56,8 +54,10 @@ void GUIMain::create() {
 	}
 }
 
-void GUIMain::imageShow() {
-	while (true) {
+void GUIMain::run() {
+
+	/* 1：开始或者继续循环；0：停止循环 */
+	while (mCriticalArea->getRunSignal()) {
 		Mat frame;
 
 		/* 创建迭代器（不能和上面的重名） */
@@ -114,7 +114,25 @@ void GUIMain::imageShow() {
 	}
 }
 
+void GUIMain::stopAll() {
+
+	/* 发送停止信号 */
+	mCriticalArea->setRunSignal(0);
+
+	/* 检查所有线程是否停止 */
+	while (mCriticalArea->getStopReturnSignal() < (mCameraNum + mWindowNum));
+
+	cout << mCriticalArea->getStopReturnSignal() << endl;
+}
+
 GUIMain::~GUIMain() {
+
+	/* 停止当前线程 */
+	quit();
+
+	/* 等待上述操作完成 */
+	wait();
+
 	delete[] mProducer;
 	delete[] mConsumer;
 	delete mCriticalArea;

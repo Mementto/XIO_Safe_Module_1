@@ -18,7 +18,7 @@ Description:启动生产者线程和消费者线程，
 #include "CParseIniFile.h"
 #include "CriticalArea.h"
 
-class GUIMain {
+class GUIMain: public QThread {
 public:
 
 	/**************************************************
@@ -105,7 +105,7 @@ public:
 
 	/**************************************************
 
-	Function:imageShow
+	Function:run
 
 	Description:接收来自2号临界区队列中的图片帧
 
@@ -113,6 +113,24 @@ public:
 		  getNumUsedBytes_2()、getFull_2()、
 		  getTestStream()、getNumUsedBytes_1()、
 		  getEmpty_2()
+    
+	Input:null
+
+	Output:null
+
+	Others:null
+
+	**************************************************/
+	void run();
+
+	/**************************************************
+
+	Function:stopAll
+
+	Description:终止所有线程
+
+	Calls:CriticalArea类，getStopReturnSignal()，
+		  setRunSignal(const int& runSignal)
 
 	Input:null
 
@@ -121,7 +139,8 @@ public:
 	Others:null
 
 	**************************************************/
-	void imageShow();
+	void stopAll();
+
 private:
 
 	/* 生产者：从相机中读取并存入临界区栈图片的线程指针 */
@@ -139,11 +158,19 @@ private:
 	/* 初始化消费者指针数组的大小并确定消费者线程数量 */
 	const int mWindowNum;
 
+	/* 相机数量的上限，初始化生产者指针
+	数组的大小（生产者线程的数量以及相机
+	数量由配置文件中的键-值数量对确定） */
+	const int mCameraNum;
+
 	/* 配置文件的文件名 */
 	const string mFileName;
 
 	/* 配置文件的节名 */
 	const string mSection;
+
+	/* 存配置文件的键-值对，还用于跨函数记录生产者线程数 */
+	map<int, string> mPath;
 };
 
 #endif // !__GUIMAIN__

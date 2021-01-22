@@ -20,7 +20,7 @@ const int CameraNum = 5;
 const int WindowNum = 1;
 
 /* 1号临界区缓冲区大小 */
-const int bufferSize_1 = 10;
+const int bufferSize_1 = 150;
 
 /* 2号临界区缓冲区大小 */
 const int bufferSize_2 = 10;
@@ -57,9 +57,14 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-	GUIMain* main = new GUIMain(FileName, Section, CameraNum, WindowNum, bufferSize_1, bufferSize_2, LessNum);
-	main->create();
-	main->imageShow();
+	while (true) {
+		GUIMain* main = new GUIMain(FileName, Section, CameraNum, WindowNum, bufferSize_1, bufferSize_2, LessNum);
+		main->create();
+		main->start();
+		waitKey(8000);
+		main->stopAll();
+		delete main;
+	}
 
     return a.exec();
 }

@@ -14,14 +14,23 @@ Description:Consumer的功能实现源文件
 
 Consumer::Consumer() : mCriticalArea(nullptr) {}
 
-Consumer::~Consumer() {}
+Consumer::~Consumer() {
+
+	/* 停止当前线程 */
+	quit();
+
+	/* 等待上述操作完成 */
+	wait();
+}
 
 void Consumer::setData(CriticalArea* data) {
 	mCriticalArea = data;
 }
 
 void Consumer::run() {
-	while (true) {
+
+	/* 判断该线程是否被请求终止 */
+	while (mCriticalArea->getRunSignal()) {
 
 		/* 对1号临界区加锁 */
 		mCriticalArea->getQMutex_1().lock();
@@ -98,4 +107,6 @@ void Consumer::run() {
 		}
 		
 	}
+	/* 线程停止运行后返回信号加1 */
+	mCriticalArea->getStopReturnSignal()++;
 }

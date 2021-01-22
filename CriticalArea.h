@@ -121,7 +121,7 @@ public:
 	Others:null
 
 	**************************************************/
-	int& getBufferSize_1();
+	const int& getBufferSize_1() const;
 
 	/**************************************************
 
@@ -138,7 +138,7 @@ public:
 	Others:null
 
 	**************************************************/
-	int& getBufferSize_2();
+	const int& getBufferSize_2() const;
 
 	/**************************************************
 
@@ -155,7 +155,7 @@ public:
 	Others:null
 
 	**************************************************/
-	int getClearThreshold_1();
+	const int getClearThreshold_1() const;
 
 	/**************************************************
 
@@ -172,7 +172,7 @@ public:
 	Others:null
 
 	**************************************************/
-	int getClearThreshold_2();
+	const int getClearThreshold_2() const;
 
 	/**************************************************
 
@@ -314,6 +314,57 @@ public:
 	**************************************************/
 	QMutex& getQMutex_2();
 
+	/**************************************************
+
+	Function:getRunSignal
+
+	Description:返回线程运行信号
+
+	Calls:null
+
+	Input:null
+
+	Output:mRunSignal，线程运行信号
+
+	Others:null
+
+	**************************************************/
+	const int& getRunSignal() const;
+
+	/**************************************************
+
+	Function:setRunSignal
+
+	Description:传入线程运行信号
+
+	Calls:null
+
+	Input:runSignal，线程运行信号
+
+	Output:null
+
+	Others:null
+
+	**************************************************/
+	void setRunSignal(const int& runSignal);
+
+	/**************************************************
+
+	Function:getStopReturnSignal
+
+	Description:返回线程终止返回信号
+
+	Calls:null
+
+	Input:null
+
+	Output:mStopReturnSignal，线程终止返回信号
+
+	Others:null
+
+	**************************************************/
+	int& getStopReturnSignal();
+
 private:
 
 	/* 指向1号临界区栈的指针 */
@@ -357,6 +408,12 @@ private:
 	删除图片），图片存储空间要略小与可用缓
 	冲区大小。LessNum为略小于的量 */
 	int mLessNum;
+
+	/* 线程运行信号，0：停止；1：运行 */
+	int mRunSignal;
+
+	/* 线程停止后的反馈信号，初始值为0，每个线程停止加1 */
+	int mStopReturnSignal;
 };
 
 #endif // !__CRITICALAREA__

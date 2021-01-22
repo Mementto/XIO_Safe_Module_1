@@ -140,7 +140,7 @@ public:
 private:
 
 	/* 指向临界区的指针 */
-	CriticalArea* mData;
+	CriticalArea* mCriticalArea;
 
 	/* 摄像头路径 */
 	string mPath;
