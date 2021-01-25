@@ -20,6 +20,8 @@ Description:负责存储1号和2号临界区中的变量
 #include <iostream>
 #include <QMutex>
 #include <stack>
+#include <queue>
+#include <map>
 
 using namespace std;
 using namespace cv;
@@ -189,7 +191,7 @@ public:
 	Others:null
 
 	**************************************************/
-	stack<map<int, Mat>*>* getVideoStream();
+	stack<map<int, Mat>*>* getVideoStream() const;
 
 	/**************************************************
 
@@ -206,7 +208,7 @@ public:
 	Others:null
 
 	**************************************************/
-	queue<map<int, Mat>*>* getTestStream();
+	queue<map<int, Mat>*>* getTestStream() const;
 
 	/**************************************************
 
@@ -316,6 +318,23 @@ public:
 
 	/**************************************************
 
+	Function:getQMutex_3
+
+	Description:返回3号临界区缓冲区互斥类对象
+
+	Calls:null
+
+	Input:null
+
+	Output:mQMutex_3，3号临界区缓冲区互斥类对象
+
+	Others:null
+
+	**************************************************/
+	QMutex& getQMutex_3();
+
+	/**************************************************
+
 	Function:getRunSignal
 
 	Description:返回线程运行信号
@@ -365,6 +384,8 @@ public:
 	**************************************************/
 	int& getStopReturnSignal();
 
+	map<int, VideoCapture>* getVideoCapture() const;
+
 private:
 
 	/* 指向1号临界区栈的指针 */
@@ -391,6 +412,9 @@ private:
 	/* 1号临界区缓冲区互斥类对象 */
 	QMutex mQMutex_1;
 
+	/* 3号临界区缓冲区互斥类对象 */
+	QMutex mQMutex_3;
+
 	/* 1号临界区缓冲区大小 */
 	int mBufferSize_1;
 
@@ -414,6 +438,10 @@ private:
 
 	/* 线程停止后的反馈信号，初始值为0，每个线程停止加1 */
 	int mStopReturnSignal;
+
+	/* id和VideoCapture的存储 */
+	map<int, VideoCapture>* mVideoCapture;
+ 
 };
 
 #endif // !__CRITICALAREA__

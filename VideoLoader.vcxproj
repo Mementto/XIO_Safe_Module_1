@@ -139,11 +139,14 @@
     <ClCompile Include="Consumer.cpp" />
     <ClCompile Include="CParseIniFile.cpp" />
     <ClCompile Include="CriticalArea.cpp" />
-    <ClCompile Include="GUIMain.cpp" />
+    <ClCompile Include="Detect.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Producer.cpp" />
+    <ClCompile Include="StartAllThread.cpp" />
+    <ClCompile Include="Supplier.cpp" />
+    <ClCompile Include="TestClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
@@ -167,8 +170,11 @@
     <ClInclude Include="Consumer.h" />
     <ClInclude Include="CParseIniFile.h" />
     <ClInclude Include="CriticalArea.h" />
-    <ClInclude Include="GUIMain.h" />
+    <ClInclude Include="Detect.h" />
     <ClInclude Include="Producer.h" />
+    <ClInclude Include="StartAllThread.h" />
+    <ClInclude Include="Supplier.h" />
+    <ClInclude Include="TestClass.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config.ini" />

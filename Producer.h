@@ -14,12 +14,7 @@ Description:生产者线程，使用opencv读入视频流，
 #ifndef __PRODUCER__
 #define __PRODUCER__
 
-#include <opencv2/opencv.hpp>
-#include <QWaitCondition>
-#include <QThread>
-#include <iostream>
-#include <QMutex>
-#include <stack>
+#include <QDebug>
 #include "CriticalArea.h"
 
 using namespace std;
@@ -64,20 +59,20 @@ public:
 
 	/**************************************************
 
-	Function:setPath
+	Function:setVideoCapture
 
-	Description:从GUIMain中获取摄像头路径
+	Description:从Supplicer获取VideoCapture
 
 	Calls:null
 
-	Input:path，通过此路径找到每一个摄像头。
+	Input:videoCapture，OpenCV变量。
 
 	Output:null
 
 	Others:null
 
 	**************************************************/
-	void setPath(string path);
+	void setVideoCapture(VideoCapture videoCapture);
 
 	/**************************************************
 
@@ -143,7 +138,7 @@ private:
 	CriticalArea* mCriticalArea;
 
 	/* 摄像头路径 */
-	string mPath;
+	VideoCapture mVideoCapture;
 
 	/* 摄像头编号 */
 	int mId;

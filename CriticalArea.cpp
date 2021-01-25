@@ -12,10 +12,14 @@ Description:CriticalArea的功能实现源文件
 
 #include "CriticalArea.h"
 
-CriticalArea::CriticalArea(const int& buffer_1, const int& buffer_2, const int& bytes_1, const int& bytes_2, const int& lessNum)
-	: mBufferSize_1(buffer_1), mBufferSize_2(buffer_2), mNumUsedBytes_1(bytes_1),
-	mNumUsedBytes_2(bytes_2), mLessNum(lessNum), mRunSignal(1), mStopReturnSignal(0),
-	mVideoStream(new stack<map<int, Mat>*>), mTestStream(new queue<map<int, Mat>*>) {}
+CriticalArea::CriticalArea(const int& buffer_1, const int& buffer_2, 
+	const int& bytes_1, const int& bytes_2, const int& lessNum)
+	: mBufferSize_1(buffer_1), mBufferSize_2(buffer_2), 
+	mNumUsedBytes_1(bytes_1), mNumUsedBytes_2(bytes_2), 
+	mLessNum(lessNum), mRunSignal(1), mStopReturnSignal(0),
+	mVideoStream(new stack<map<int, Mat>*>), 
+	mTestStream(new queue<map<int, Mat>*>), 
+	mVideoCapture(new map<int, VideoCapture>) {}
 
 CriticalArea::~CriticalArea() {
 	while (mVideoStream->size()) {
@@ -56,10 +60,10 @@ const int CriticalArea::getClearThreshold_2() const {
 	int temp = mBufferSize_2;
 	return temp - mLessNum;
 }
-stack<map<int, Mat>*>* CriticalArea::getVideoStream() {
+stack<map<int, Mat>*>* CriticalArea::getVideoStream() const {
 	return mVideoStream;
 }
-queue<map<int, Mat>*>* CriticalArea::getTestStream() {
+queue<map<int, Mat>*>* CriticalArea::getTestStream() const {
 	return mTestStream;
 }
 QWaitCondition& CriticalArea::getEmpty_1() {
@@ -80,15 +84,18 @@ QMutex& CriticalArea::getQMutex_1(){
 QMutex& CriticalArea::getQMutex_2() {
 	return mQMutex_2;
 }
-
+QMutex& CriticalArea::getQMutex_3() {
+	return mQMutex_3;
+}
 const int& CriticalArea::getRunSignal() const {
 	return mRunSignal;
 }
-
 void CriticalArea::setRunSignal(const int& runSignal) {
 	mRunSignal = runSignal;
 }
-
 int& CriticalArea::getStopReturnSignal() {
 	return mStopReturnSignal;
+}
+map<int, VideoCapture>* CriticalArea::getVideoCapture() const {
+	return mVideoCapture;
 }

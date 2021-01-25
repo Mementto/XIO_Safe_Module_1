@@ -14,12 +14,6 @@ Description:消费者线程，负责从1号临界区栈中读取
 #ifndef __CONSUMER__
 #define __CONSUMER__
 
-#include <opencv2/opencv.hpp>
-#include <QWaitCondition>
-#include <QThread>
-#include <iostream>
-#include <QMutex>
-#include <stack>
 #include "CriticalArea.h"
 
 using namespace std;
